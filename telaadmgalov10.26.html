@@ -7,60 +7,114 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-100 p-4 md:p-8">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-        <h2 class="text-2xl font-black text-red-800 mb-6 uppercase">Gerenciar Frota</h2>
+        <h2 id="form-title" class="text-2xl font-black text-red-800 mb-6 uppercase">Gerenciar Frota</h2>
         
+        <!-- Campo oculto para controlar se estamos editando -->
+        <input type="hidden" id="m-id">
+
         <div class="space-y-4">
-            <input type="text" id="m-img" placeholder="Link da Imagem (URL)" class="w-full p-3 border rounded">
-            <input type="text" id="m-nome" placeholder="Nome da Moto" class="w-full p-3 border rounded">
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" id="m-ano" placeholder="Ano" class="w-full p-3 border rounded">
-                <input type="text" id="m-modelo" placeholder="Modelo" class="w-full p-3 border rounded">
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase">Link da Imagem</label>
+                <input type="text" id="m-img" placeholder="URL da foto (Aceita Google Drive)" class="w-full p-3 border rounded">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase">Nome da Moto</label>
+                <input type="text" id="m-nome" placeholder="Ex: Honda CG 160 Start" class="w-full p-3 border rounded">
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <input type="number" id="m-semanal" placeholder="Valor Semanal (R$)" class="w-full p-3 border rounded">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Ano</label>
+                    <input type="text" id="m-ano" placeholder="2024" class="w-full p-3 border rounded">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Modelo</label>
+                    <input type="text" id="m-modelo" placeholder="EX / Fan / Titan" class="w-full p-3 border rounded">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Semanal (R$)</label>
+                    <input type="number" id="m-semanal" placeholder="0.00" class="w-full p-3 border rounded">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Caução (R$)</label>
+                    <input type="number" id="m-caucao" placeholder="Valor do Depósito" class="w-full p-3 border rounded">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase">Status</label>
                 <select id="m-status" class="w-full p-3 border rounded">
                     <option value="disponivel">DISPONÍVEL</option>
                     <option value="indisponivel">INDISPONÍVEL</option>
                 </select>
             </div>
-            <button onclick="saveMoto()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold">SALVAR NO BANCO DE DADOS</button>
+            
+            <div class="flex gap-2">
+                <button id="btn-save" onclick="saveMoto()" class="flex-1 bg-green-600 text-white py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition">Salvar no Banco</button>
+                <button id="btn-cancel" onclick="clearForm()" class="hidden bg-gray-500 text-white px-6 py-4 rounded-xl font-bold uppercase">Cancelar</button>
+            </div>
         </div>
 
-        <div id="admin-list" class="mt-10 border-t pt-6 space-y-2">
-            <!-- Lista de motos para excluir -->
+        <div id="admin-list" class="mt-10 border-t pt-6 space-y-3">
+            <!-- Lista de motos carregará aqui -->
         </div>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO FIREBASE (IGUAL AO INDEX)
         const firebaseConfig = {
             apiKey: "AIzaSyD3IPrt3xVPUE3S1dImKsAV5MiP-8OhcBE",
-              authDomain: "teste-gm-c3955.firebaseapp.com",
-          databaseURL: "https://teste-gm-c3955-default-rtdb.firebaseio.com",
-          projectId: "teste-gm-c3955",
-         storageBucket: "teste-gm-c3955.firebasestorage.app",
-          messagingSenderId: "701174174796",
-          appId: "1:701174174796:web:2ad4422822491e79db50e9"
+            authDomain: "teste-gm-c3955.firebaseapp.com",
+            databaseURL: "https://teste-gm-c3955-default-rtdb.firebaseio.com",
+            projectId: "teste-gm-c3955",
+            storageBucket: "teste-gm-c3955.firebasestorage.app",
+            messagingSenderId: "701174174796",
+            appId: "1:701174174796:web:2ad4422822491e79db50e9"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // Função para converter link do Drive em link direto
+        function formatDriveLink(link) {
+            if (link.includes('drive.google.com')) {
+                let id = "";
+                if (link.includes('id=')) {
+                    id = link.split('id=')[1].split('&')[0];
+                } else {
+                    id = link.split('/d/')[1].split('/')[0];
+                }
+                return `https://lh3.googleusercontent.com/d/${id}`;
+            }
+            return link;
+        }
+
         function saveMoto() {
+            const id = document.getElementById('m-id').value;
             const motoData = {
-                img: document.getElementById('m-img').value,
+                img: formatDriveLink(document.getElementById('m-img').value),
                 nome: document.getElementById('m-nome').value,
                 ano: document.getElementById('m-ano').value,
                 modelo: document.getElementById('m-modelo').value,
                 semanal: document.getElementById('m-semanal').value,
+                caucao: document.getElementById('m-caucao').value,
                 status: document.getElementById('m-status').value
             };
-            db.ref('motos').push(motoData).then(() => {
-                alert("Moto salva com sucesso!");
-                location.reload();
-            });
+
+            if (id) {
+                // Editar existente
+                db.ref('motos/' + id).update(motoData).then(() => {
+                    alert("Moto atualizada!");
+                    clearForm();
+                });
+            } else {
+                // Criar nova
+                db.ref('motos').push(motoData).then(() => {
+                    alert("Moto cadastrada!");
+                    clearForm();
+                });
+            }
         }
 
         function loadAdmin() {
@@ -70,18 +124,57 @@
                 list.innerHTML = "";
                 if(motos) {
                     Object.keys(motos).forEach(key => {
+                        const m = motos[key];
                         list.innerHTML += `
-                            <div class="flex justify-between p-3 bg-gray-50 rounded">
-                                <span>${motos[key].nome}</span>
-                                <button onclick="deleteMoto('${key}')" class="text-red-600 font-bold">Excluir</button>
+                            <div class="flex flex-col p-4 bg-gray-50 rounded-lg border">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-red-800">${m.nome}</span>
+                                    <span class="text-xs font-bold text-gray-400">R$ ${m.semanal}/semana</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="editMoto('${key}')" class="flex-1 bg-blue-100 text-blue-700 py-2 rounded font-bold text-sm">EDITAR</button>
+                                    <button onclick="deleteMoto('${key}')" class="flex-1 bg-red-100 text-red-700 py-2 rounded font-bold text-sm">EXCLUIR</button>
+                                </div>
                             </div>`;
                     });
                 }
             });
         }
 
+        function editMoto(key) {
+            db.ref('motos/' + key).once('value').then((snapshot) => {
+                const m = snapshot.val();
+                document.getElementById('m-id').value = key;
+                document.getElementById('m-img').value = m.img;
+                document.getElementById('m-nome').value = m.nome;
+                document.getElementById('m-ano').value = m.ano;
+                document.getElementById('m-modelo').value = m.modelo;
+                document.getElementById('m-semanal').value = m.semanal;
+                document.getElementById('m-caucao').value = m.caucao || "";
+                document.getElementById('m-status').value = m.status;
+
+                document.getElementById('form-title').innerText = "Editando Moto";
+                document.getElementById('btn-save').innerText = "Confirmar Alteração";
+                document.getElementById('btn-cancel').classList.remove('hidden');
+                window.scrollTo(0, 0);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('m-id').value = "";
+            document.getElementById('m-img').value = "";
+            document.getElementById('m-nome').value = "";
+            document.getElementById('m-ano').value = "";
+            document.getElementById('m-modelo').value = "";
+            document.getElementById('m-semanal').value = "";
+            document.getElementById('m-caucao').value = "";
+            document.getElementById('form-title').innerText = "Gerenciar Frota";
+            document.getElementById('btn-save').innerText = "Salvar no Banco";
+            document.getElementById('btn-cancel').classList.add('hidden');
+        }
+
         function deleteMoto(key) {
-            if(confirm("Deseja remover esta moto?")) {
+            if(confirm("Deseja realmente remover esta moto da Galo Motos?")) {
                 db.ref('motos/' + key).remove();
             }
         }
