@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Administrativo | Galo Motos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div id="login-screen" class="max-w-md mx-auto mt-20 bg-gray-800 p-8 rounded-2xl shadow-2xl">
+        <h2 class="text-2xl font-black mb-6 text-red-500 italic">GALO MOTOS ADMIN</h2>
+        <input type="password" id="pass" placeholder="Senha Mestra" class="w-full p-4 rounded bg-gray-700 mb-4 outline-none border border-transparent focus:border-red-500">
+        <button onclick="login()" class="w-full bg-red-600 py-4 rounded-xl font-bold uppercase">Entrar no Sistema</button>
+    </div>
+
+    <div id="dash-screen" class="hidden max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-black text-red-500 uppercase">Gerenciar Frota</h1>
+            <button onclick="location.reload()" class="text-sm bg-gray-700 px-4 py-2 rounded">Sair</button>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            <!-- Formulário -->
+            <div class="bg-gray-800 p-6 rounded-2xl">
+                <h3 id="form-title" class="font-bold mb-4 uppercase text-gray-400">Novo Cadastro</h3>
+                <div class="space-y-4">
+                    <input type="file" id="m-img" accept="image/*" class="w-full text-xs">
+                    <input type="text" id="m-nome" placeholder="Nome da Moto" class="w-full p-3 bg-gray-700 rounded">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="m-ano" placeholder="Ano" class="w-full p-3 bg-gray-700 rounded">
+                        <input type="text" id="m-modelo" placeholder="Modelo" class="w-full p-3 bg-gray-700 rounded">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="m-semanal" placeholder="Semanal (R$)" class="w-full p-3 bg-gray-700 rounded">
+                        <input type="number" id="m-caucao" placeholder="Caução (R$)" class="w-full p-3 bg-gray-700 rounded">
+                    </div>
+                    <select id="m-status" class="w-full p-3 bg-gray-700 rounded">
+                        <option value="disponivel">Disponível</option>
+                        <option value="indisponivel">Indisponível</option>
+                    </select>
+                    <button onclick="salvar()" id="btn-save" class="w-full bg-green-600 py-4 rounded-xl font-bold">SALVAR</button>
+                    <button onclick="cancelar()" id="btn-cancel" class="hidden w-full text-gray-400 text-xs mt-2">CANCELAR EDIÇÃO</button>
+                </div>
+            </div>
+
+            <!-- Lista -->
+            <div class="space-y-4">
+                <h3 class="font-bold mb-4 uppercase text-gray-400">Motos no Site</h3>
+                <div id="admin-list" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const HASH_CORRETO = "97463f80998904df9043217b73b306c4b9f271f25381a9425442566ec48074d3"; // senha: galo
+        let motos = JSON.parse(localStorage.getItem('motos')) || [];
+        let editId = null;
+
+        async function login() {
+            const pass = document.getElementById('pass').value;
+            const msgUint8 = new TextEncoder().encode(pass);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if(hashHex === HASH_CORRETO) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dash-screen').classList.remove('hidden');
+                renderList();
+            } else { alert("Senha Incorreta!"); }
+        }
+
+        function getBase64(file) {
+            return new Promise((r, j) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => r(reader.result);
+                reader.onerror = e => j(e);
+            });
+        }
+
+        async function salvar() {
+            const f = document.getElementById('m-img');
+            const moto = {
+                id: editId || Date.now(),
+                nome: document.getElementById('m-nome').value,
+                ano: document.getElementById('m-ano').value,
+                modelo: document.getElementById('m-modelo').value,
+                semanal: document.getElementById('m-semanal').value,
+                caucao: document.getElementById('m-caucao').value,
+                status: document.getElementById('m-status').value,
+                img: editId ? motos.find(m => m.id === editId).img : null
+            };
+
+            if(f.files[0]) moto.img = await getBase64(f.files[0]);
+            
+            if(editId) {
+                const idx = motos.findIndex(m => m.id === editId);
+                motos[idx] = moto;
+            } else { motos.push(moto); }
+
+            localStorage.setItem('motos', JSON.stringify(motos));
+            location.reload();
+        }
+
+        function renderList() {
+            const container = document.getElementById('admin-list');
+            container.innerHTML = "";
+            motos.forEach(m => {
+                container.innerHTML += `
+                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-xl border border-gray-700">
+                        <span class="font-bold">${m.nome}</span>
+                        <div class="flex gap-2">
+                            <button onclick="editar(${m.id})" class="text-blue-400 text-xs">EDITAR</button>
+                            <button onclick="excluir(${m.id})" class="text-red-400 text-xs">EXCLUIR</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function excluir(id) {
+            if(confirm("Excluir moto?")) {
+                motos = motos.filter(m => m.id !== id);
+                localStorage.setItem('motos', JSON.stringify(motos));
+                renderList();
+            }
+        }
+
+        function editar(id) {
+            const m = motos.find(m => m.id === id);
+            editId = id;
+            document.getElementById('m-nome').value = m.nome;
+            document.getElementById('m-ano').value = m.ano;
+            document.getElementById('m-modelo').value = m.modelo;
+            document.getElementById('m-semanal').value = m.semanal;
+            document.getElementById('m-caucao').value = m.caucao;
+            document.getElementById('m-status').value = m.status;
+            document.getElementById('form-title').innerText = "Editando Moto";
+            document.getElementById('btn-cancel').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
