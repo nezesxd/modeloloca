@@ -215,18 +215,69 @@ let motos = JSON.parse(localStorage.getItem('motos')) || [];
 function render() {
     const list = document.getElementById('moto-list');
     const carousel = document.getElementById('carousel');
+    
+    // 1. Defina aqui o caminho da sua foto fixa
+    const fotoFixa = "card.png"; 
+
+    // Limpa o carrossel e cria o trilho (track)
+    carousel.innerHTML = ""; 
     const track = document.createElement('div');
     track.id = "track";
-    track.className = "carousel-track";
+    track.style.display = "flex";
+    track.style.transition = "transform 0.8s ease-in-out";
+    track.style.height = "100%";
     
-    // Imagem padrão sempre presente
-    track.innerHTML = `<img src="card.png" class="carousel-img">`;
+    // 2. ADICIONA A FOTO FIXA COMO PRIMEIRO ITEM
+    track.innerHTML = `<img src="${fotoFixa}" class="carousel-img active" style="min-width: 100%; object-fit: cover;">`;
     carousel.appendChild(track);
 
     if (motos.length === 0) {
         list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível no momento.</p>`;
     }
 
+    motos.forEach((moto, i) => {
+        // Renderiza os Cards das Motos
+        list.innerHTML += `
+            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                <img src="${moto.img || 'https://via.placeholder.com/400x300?text=Sem+Foto'}" class="w-full h-48 object-cover">
+                <div class="p-5">
+                    <h4 class="font-black text-xl text-dark-red uppercase">${moto.nome}</h4>
+                    <p class="text-xs font-bold text-gray-400 mb-4">${moto.modelo} | ${moto.ano}</p>
+                    <div class="flex justify-between items-center border-t pt-4">
+                        <div>
+                            <p class="text-[10px] uppercase text-gray-400">Semanal</p>
+                            <p class="text-2xl font-black italic">R$ ${moto.semanal}</p>
+                        </div>
+                        <span class="px-2 py-1 rounded text-[10px] font-bold ${moto.status === 'disponivel' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                            ${moto.status.toUpperCase()}
+                        </span>
+                    </div>
+                    <a href="https://wa.me/5571999999999" class="block w-full text-center mt-4 bg-dark-red text-white py-3 rounded-lg font-bold hover:bg-red-700 transition">ALUGAR AGORA</a>
+                </div>
+            </div>`;
+
+        // 3. ADICIONA AS FOTOS DAS MOTOS AO CARROSSEL (Limite de 5)
+        if(i < 5 && moto.img) {
+            const img = document.createElement('img');
+            img.src = moto.img;
+            img.className = "carousel-img";
+            img.style.minWidth = "100%";
+            img.style.objectFit = "cover";
+            img.style.display = "block"; // Garante que apareça no flex
+            track.appendChild(img);
+        }
+    });
+
+    // Lógica do Carrossel Automático
+    let current = 0;
+    setInterval(() => {
+        const slides = track.querySelectorAll('img'); // Pega todas as imagens dentro do track
+        if(slides.length > 1) {
+            current = (current + 1) % slides.length;
+            track.style.transform = `translateX(-${current * 100}%)`;
+        }
+    }, 4000);
+}
     motos.forEach((moto, i) => {
         // Renderiza os Cards das Motos
         list.innerHTML += `
