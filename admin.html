@@ -51,22 +51,17 @@
     </div>
 
     <script>
-        const HASH_CORRETO = "4A7DFE44B4ACC935E82BDD3F6542A4A9FDEBC7C6665061E4E90F7A069AC38F08"; // senha: galo
-        let motos = JSON.parse(localStorage.getItem('motos')) || [];
-        let editId = null;
-
-        async function login() {
+        function login() {
             const pass = document.getElementById('pass').value;
-            const msgUint8 = new TextEncoder().encode(pass);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if(hashHex === HASH_CORRETO) {
+            
+            // Usando a comparação direta para garantir compatibilidade total no GitHub Pages
+            if(pass === "galo") { 
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dash-screen').classList.remove('hidden');
                 renderList();
-            } else { alert("Senha Incorreta!"); }
+            } else { 
+                alert("Senha Incorreta!"); 
+            }
         }
 
         function getBase64(file) {
