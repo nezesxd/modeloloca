@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Galo Motos 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-black text-red-800 mb-6 uppercase">Gerenciar Frota</h2>
+        
+        <div class="space-y-4">
+            <input type="text" id="m-img" placeholder="Link da Imagem (URL)" class="w-full p-3 border rounded">
+            <input type="text" id="m-nome" placeholder="Nome da Moto" class="w-full p-3 border rounded">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="m-ano" placeholder="Ano" class="w-full p-3 border rounded">
+                <input type="text" id="m-modelo" placeholder="Modelo" class="w-full p-3 border rounded">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <input type="number" id="m-semanal" placeholder="Valor Semanal (R$)" class="w-full p-3 border rounded">
+                <select id="m-status" class="w-full p-3 border rounded">
+                    <option value="disponivel">DISPONÍVEL</option>
+                    <option value="indisponivel">INDISPONÍVEL</option>
+                </select>
+            </div>
+            <button onclick="saveMoto()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold">SALVAR NO BANCO DE DADOS</button>
+        </div>
+
+        <div id="admin-list" class="mt-10 border-t pt-6 space-y-2">
+            <!-- Lista de motos para excluir -->
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO DO FIREBASE (IGUAL AO INDEX)
+        const firebaseConfig = {
+            apiKey: "COLE_AQUI_SUA_API_KEY",
+            authDomain: "COLE_AQUI_SEU_AUTH_DOMAIN",
+            databaseURL: "COLE_AQUI_SUA_DATABASE_URL",
+            projectId: "COLE_AQUI_SEU_PROJECT_ID",
+            storageBucket: "COLE_AQUI_SEU_STORAGE_BUCKET",
+            messagingSenderId: "COLE_AQUI_SENDER_ID",
+            appId: "COLE_AQUI_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function saveMoto() {
+            const motoData = {
+                img: document.getElementById('m-img').value,
+                nome: document.getElementById('m-nome').value,
+                ano: document.getElementById('m-ano').value,
+                modelo: document.getElementById('m-modelo').value,
+                semanal: document.getElementById('m-semanal').value,
+                status: document.getElementById('m-status').value
+            };
+            db.ref('motos').push(motoData).then(() => {
+                alert("Moto salva com sucesso!");
+                location.reload();
+            });
+        }
+
+        function loadAdmin() {
+            db.ref('motos').on('value', (snapshot) => {
+                const motos = snapshot.val();
+                const list = document.getElementById('admin-list');
+                list.innerHTML = "";
+                if(motos) {
+                    Object.keys(motos).forEach(key => {
+                        list.innerHTML += `
+                            <div class="flex justify-between p-3 bg-gray-50 rounded">
+                                <span>${motos[key].nome}</span>
+                                <button onclick="deleteMoto('${key}')" class="text-red-600 font-bold">Excluir</button>
+                            </div>`;
+                    });
+                }
+            });
+        }
+
+        function deleteMoto(key) {
+            if(confirm("Deseja remover esta moto?")) {
+                db.ref('motos/' + key).remove();
+            }
+        }
+
+        window.onload = loadAdmin;
+    </script>
+</body>
+</html>
