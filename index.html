@@ -12,54 +12,100 @@
         :root { --dark-red: #7f0000; }
         .bg-dark-red { background-color: var(--dark-red); }
         .text-dark-red { color: var(--dark-red); }
-        .carousel-container { height: 350px; overflow: hidden; position: relative; background: #111; }
+        .carousel-container { overflow: hidden; position: relative; background: #111; }
         .carousel-track { display: flex; transition: transform 0.8s ease-in-out; height: 100%; }
         .carousel-img { min-width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 relative">
 
-    <header class="bg-dark-red text-white p-5 shadow-2xl flex justify-between items-center">
+    <!-- Cabeçalho -->
+    <header class="bg-dark-red text-white p-4 sm:p-5 shadow-2xl flex justify-between items-center">
         <div class="flex items-center gap-2">
-            <div class="bg-white text-dark-red font-black p-1 rounded">GM</div>
-            <h1 class="text-2xl font-black italic">GALO MOTOS</h1>
+            <div class="bg-white text-dark-red font-black p-1 sm:p-2 text-sm rounded">GM</div>
+            <h1 class="text-xl sm:text-2xl font-black italic uppercase tracking-tighter">Galo Motos</h1>
         </div>
     </header>
 
-    <div id="carousel" class="carousel-container border-b-4 border-dark-red">
+    <!-- Carrossel -->
+    <div id="carousel" class="carousel-container border-b-4 border-dark-red h-48 sm:h-64 md:h-80 lg:h-[450px]">
         <div id="track" class="carousel-track">
-            <!-- Foto Fixa -->
             <img src="card.png" class="carousel-img">
         </div>
     </div>
 
-    <main class="container mx-auto py-12 px-6">
-        <div id="moto-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Seção de Requisitos e Pagamento (NOVA) -->
+    <section class="bg-white py-10 sm:py-16 px-4 sm:px-6 border-b">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20">
+            
+            <!-- 1. Requisitos para Locar -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-dark-red text-white flex items-center justify-center rounded-full font-bold">1</div>
+                    <h2 class="text-xl sm:text-2xl font-black uppercase text-gray-800">Requisitos para Locar</h2>
+                </div>
+                <ul class="space-y-3 text-gray-600 font-medium sm:text-lg">
+                    <li class="flex items-start gap-2">✅ <span>Ser maior de 18 Anos</span></li>
+                    <li class="flex items-start gap-2">✅ <span>Apresentar CNH categoria A <strong class="text-red-700">(não aceitamos PPD nem permissão)</strong></span></li>
+                    <li class="flex items-start gap-2">✅ <span>Apresentar documento original com foto (RG, CNH ou Passaporte) + CPF</span></li>
+                    <li class="flex items-start gap-2">✅ <span>Comprovante de residência (conta de luz/água/internet dos últimos 3 meses)</span></li>
+                    <li class="flex items-start gap-2 text-dark-red font-bold underline">🚫 Não alugar para terceiros</li>
+                </ul>
+            </div>
+
+            <!-- 2. Formas de Pagamento -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-dark-red text-white flex items-center justify-center rounded-full font-bold">2</div>
+                    <h2 class="text-xl sm:text-2xl font-black uppercase text-gray-800">Formas de Pagamento</h2>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
+                        <span class="block text-2xl mb-1">💳</span>
+                        <p class="font-bold text-gray-700">Cartão Crédito</p>
+                    </div>
+                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
+                        <span class="block text-2xl mb-1">🏦</span>
+                        <p class="font-bold text-gray-700">Cartão Débito</p>
+                    </div>
+                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
+                        <span class="block text-2xl mb-1">📱</span>
+                        <p class="font-bold text-gray-700">Pix</p>
+                    </div>
+                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
+                        <span class="block text-2xl mb-1">💵</span>
+                        <p class="font-bold text-gray-700">Dinheiro</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lista de Motos -->
+    <main class="container mx-auto py-12 px-4 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl font-black italic mb-8 uppercase text-center md:text-left">Nossa Frota</h2>
+        <div id="moto-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             <!-- Cards via Firebase -->
         </div>
     </main>
 
-    <!-- Sessão: Deseja saber mais? -->
-    <section class="bg-gray-900 text-white py-12 px-6 text-center border-t-4 border-dark-red">
-        <h2 class="text-3xl font-black italic mb-4">Deseja saber mais?</h2>
-        <p class="mb-8 text-gray-400 max-w-lg mx-auto">Tem alguma dúvida sobre os modelos, disponibilidade ou regras de locação? Nossa equipe está pronta para te atender.</p>
-        <a href="https://wa.me/5571999999999" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.373-.043c.098-.115.427-.49.543-.66.115-.173.231-.144.396-.087.164.058 1.04.491 1.214.578.173.087.289.144.332.231.043.087.043.505-.101.91z"/>
-            </svg>
-            Entre em contato via WhatsApp
+    <!-- Sessão CTA Rodapé -->
+    <section class="bg-gray-900 text-white py-12 px-4 sm:px-6 text-center border-t-4 border-dark-red">
+        <h2 class="text-3xl lg:text-4xl font-black italic mb-4 uppercase">Deseja saber mais?</h2>
+        <p class="mb-8 text-gray-400 max-w-lg mx-auto">Nossa equipe em Salvador e região está pronta para te atender agora mesmo.</p>
+        <a href="https://wa.me/5571999999999" target="_blank" class="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg w-full sm:w-auto">
+            Falar com Atendente no WhatsApp
         </a>
     </section>
 
-    <!-- Botão Flutuante do WhatsApp -->
-    <a href="https://wa.me/5571999999999" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-transform transform hover:scale-110 z-50 flex items-center justify-center">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.373-.043c.098-.115.427-.49.543-.66.115-.173.231-.144.396-.087.164.058 1.04.491 1.214.578.173.087.289.144.332.231.043.087.043.505-.101.91z"/>
-        </svg>
+    <!-- Botão Flutuante -->
+    <a href="https://wa.me/5571999999999" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl z-50 transform hover:scale-110 transition">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.373-.043c.098-.115.427-.49.543-.66.115-.173.231-.144.396-.087.164.058 1.04.491 1.214.578.173.087.289.144.332.231.043.087.043.505-.101.91z"/></svg>
     </a>
 
     <script>
-        // CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELOS SEUS DADOS)
+        // Use as mesmas configurações do Firebase do seu arquivo anterior aqui
         const firebaseConfig = {
             apiKey: "AIzaSyD3IPrt3xVPUE3S1dImKsAV5MiP-8OhcBE",
             authDomain: "teste-gm-c3955.firebaseapp.com",
@@ -80,37 +126,34 @@
             db.ref('motos').on('value', (snapshot) => {
                 const motos = snapshot.val();
                 list.innerHTML = "";
-                // Mantém a foto fixa no carrossel
                 track.innerHTML = `<img src="card.png" class="carousel-img">`;
 
                 if (!motos) {
-                    list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível.</p>`;
+                    list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível no momento.</p>`;
                     return;
                 }
 
                 Object.keys(motos).forEach((key) => {
                     const moto = motos[key];
-                    // Adiciona Card (agora exibindo o Caução)
                     list.innerHTML += `
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden border">
-                            <img src="${moto.img || 'https://via.placeholder.com/400x300'}" class="w-full h-48 object-cover">
-                            <div class="p-5">
-                                <h4 class="font-black text-xl text-dark-red">${moto.nome}</h4>
-                                <p class="text-xs text-gray-400">${moto.modelo} | ${moto.ano}</p>
-                                <div class="flex flex-col mt-4">
-                                    <div class="flex justify-between items-center">
-                                        <p class="text-2xl font-black italic">R$ ${moto.semanal}</p>
-                                        <span class="px-2 py-1 rounded text-[10px] font-bold ${moto.status === 'disponivel' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden border flex flex-col h-full hover:shadow-xl transition">
+                            <img src="${moto.img || 'https://via.placeholder.com/400x300'}" class="w-full h-48 sm:h-56 object-cover">
+                            <div class="p-4 sm:p-5 flex flex-col flex-grow">
+                                <h4 class="font-black text-lg sm:text-xl text-dark-red uppercase line-clamp-1">${moto.nome}</h4>
+                                <p class="text-[10px] sm:text-xs text-gray-400 mb-2">${moto.modelo} | ${moto.ano}</p>
+                                <div class="flex flex-col mt-auto">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="text-xl sm:text-2xl font-black italic">R$ ${moto.semanal}/sem</p>
+                                        <span class="px-2 py-1 rounded text-[9px] font-bold ${moto.status === 'disponivel' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
                                             ${moto.status.toUpperCase()}
                                         </span>
                                     </div>
-                                    <p class="text-xs font-bold text-gray-500 mt-1 uppercase">Caução: R$ ${moto.caucao || '0'}</p>
+                                    <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase">Caução: R$ ${moto.caucao || '0'}</p>
                                 </div>
-                                <a href="https://wa.me/5571999999999" target="_blank" class="block text-center mt-4 bg-dark-red text-white py-3 rounded-lg font-bold">ALUGAR AGORA</a>
+                                <a href="https://wa.me/5571999999999" target="_blank" class="block text-center mt-4 bg-dark-red text-white py-3 rounded-lg font-bold text-sm hover:bg-red-900 transition">ALUGAR AGORA</a>
                             </div>
                         </div>`;
                     
-                    // Adiciona ao Carrossel se houver imagem
                     if(moto.img) {
                         track.innerHTML += `<img src="${moto.img}" class="carousel-img">`;
                     }
@@ -118,7 +161,6 @@
             });
         }
 
-        // Intervalo do Carrossel
         let current = 0;
         setInterval(() => {
             const slides = document.querySelectorAll('.carousel-img');
