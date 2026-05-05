@@ -81,7 +81,7 @@
             <!-- Botões de Ação -->
             <div class="flex flex-col sm:flex-row gap-3 mt-8">
                 <button id="btn-save" onclick="saveMoto()" class="flex-1 bg-red-800 text-white py-4 rounded-xl font-bold uppercase hover:bg-red-900 transition-all shadow-lg active:scale-95">
-                    Salvar no Banco
+                    Salvar
                 </button>
                 <button id="btn-cancel" onclick="clearForm()" class="hidden sm:inline-block bg-gray-200 text-gray-600 px-8 py-4 rounded-xl font-bold uppercase hover:bg-gray-300 transition">
                     Cancelar
@@ -225,7 +225,7 @@
             document.getElementById('m-semanal').value = "";
             document.getElementById('m-caucao').value = "";
             document.getElementById('form-title').innerText = "Gerenciar Frota";
-            document.getElementById('btn-save').innerText = "Salvar no Banco";
+            document.getElementById('btn-save').innerText = "Salvar";
             document.getElementById('btn-cancel').classList.add('hidden');
             document.getElementById('btn-cancel-mobile').classList.add('hidden');
         }
