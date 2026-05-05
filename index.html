@@ -126,7 +126,7 @@
             db.ref('motos').on('value', (snapshot) => {
                 const motos = snapshot.val();
                 list.innerHTML = "";
-                track.innerHTML = `<img src="card.png" class="carousel-img">`;
+                track.innerHTML = `<img src="design_card_byBianca.png" class="carousel-img">`;
 
                 if (!motos) {
                     list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível no momento.</p>`;
