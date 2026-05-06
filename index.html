@@ -68,34 +68,63 @@
         </div>
     </div>
 </section>
-            <!-- 2. Formas de Pagamento -->
-            <div class="space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-dark-red text-white flex items-center justify-center rounded-full font-bold">2</div>
-                    <h2 class="text-xl sm:text-2xl font-black uppercase text-gray-800">Formas de Pagamento</h2>
-                </div>
-                <div class="grid grid-cols-2 gap-4 text-center">
-                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
-                        <span class="block text-2xl mb-1">💳</span>
-                        <p class="font-bold text-gray-700">Cartão Crédito</p>
-                    </div>
-                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
-                        <span class="block text-2xl mb-1">🏦</span>
-                        <p class="font-bold text-gray-700">Cartão Débito</p>
-                    </div>
-                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
-                        <span class="block text-2xl mb-1">📱</span>
-                        <p class="font-bold text-gray-700">Pix</p>
-                    </div>
-                    <div class="p-4 border-2 border-gray-100 rounded-xl hover:border-dark-red transition">
-                        <span class="block text-2xl mb-1">💵</span>
-                        <p class="font-bold text-gray-700">Dinheiro</p>
-                    </div>
-                </div>
+<section class="bg-white py-10 sm:py-16 px-4 sm:px-6 border-b">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-start">
+        
+        <!-- 1. Requisitos para Locar (Mantido para alinhamento) -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-dark-red text-white flex items-center justify-center rounded-full font-bold">1</div>
+                <h2 class="text-xl sm:text-2xl font-black uppercase text-gray-800">Requisitos para Locar</h2>
             </div>
-
+            <ul class="space-y-3 text-gray-600 font-medium sm:text-lg">
+                <li class="flex items-start gap-2">✅ <span>Ser maior de 18 Anos</span></li>
+                <li class="flex items-start gap-2">✅ <span>Apresentar CNH categoria A <strong class="text-red-700">(não aceitamos PPD nem permissão)</strong></span></li>
+                <li class="flex items-start gap-2">✅ <span>Apresentar documento original com foto (RG, CNH ou Passaporte) + CPF</span></li>
+                <li class="flex items-start gap-2">✅ <span>Comprovante de residência (últimos 3 meses)</span></li>
+                <li class="flex items-start gap-2 text-dark-red font-bold underline">🚫 Não alugar para terceiros</li>
+            </ul>
         </div>
-    </section>
+
+        <!-- 2. Formas de Pagamento com Efeito 3D -->
+        <div class="space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-dark-red text-white flex items-center justify-center rounded-full font-bold">2</div>
+                <h2 class="text-xl sm:text-2xl font-black uppercase text-gray-800">Formas de Pagamento</h2>
+            </div>
+            
+            <!-- Grid Alinhado -->
+            <div class="grid grid-cols-2 gap-6 text-center perspective-1000">
+                
+                <!-- Card: Cartão Crédito -->
+                <div class="group p-6 border-2 border-gray-100 rounded-2xl bg-white transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-105 hover:border-dark-red hover:shadow-[0_20px_50px_rgba(127,0,0,0.2)] cursor-default">
+                    <span class="block text-4xl mb-2 transition-transform duration-300 group-hover:scale-110">💳</span>
+                    <p class="font-black text-gray-700 uppercase text-sm tracking-tighter">Cartão Crédito</p>
+                </div>
+
+                <!-- Card: Cartão Débito -->
+                <div class="group p-6 border-2 border-gray-100 rounded-2xl bg-white transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-105 hover:border-dark-red hover:shadow-[0_20px_50px_rgba(127,0,0,0.2)] cursor-default">
+                    <span class="block text-4xl mb-2 transition-transform duration-300 group-hover:scale-110">🏦</span>
+                    <p class="font-black text-gray-700 uppercase text-sm tracking-tighter">Cartão Débito</p>
+                </div>
+
+                <!-- Card: Pix -->
+                <div class="group p-6 border-2 border-gray-100 rounded-2xl bg-white transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-105 hover:border-dark-red hover:shadow-[0_20px_50px_rgba(127,0,0,0.2)] cursor-default">
+                    <span class="block text-4xl mb-2 transition-transform duration-300 group-hover:scale-110">📱</span>
+                    <p class="font-black text-gray-700 uppercase text-sm tracking-tighter">Pix</p>
+                </div>
+
+                <!-- Card: Dinheiro -->
+                <div class="group p-6 border-2 border-gray-100 rounded-2xl bg-white transition-all duration-300 ease-out transform hover:-translate-y-2 hover:scale-105 hover:border-dark-red hover:shadow-[0_20px_50px_rgba(127,0,0,0.2)] cursor-default">
+                    <span class="block text-4xl mb-2 transition-transform duration-300 group-hover:scale-110">💵</span>
+                    <p class="font-black text-gray-700 uppercase text-sm tracking-tighter">Dinheiro</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
 
     <!-- Lista de Motos -->
     <main class="container mx-auto py-12 px-4 sm:px-6">
