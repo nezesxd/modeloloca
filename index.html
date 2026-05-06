@@ -68,6 +68,19 @@
         </div>
     </div>
 </section>
+
+
+    <!-- Lista de Motos -->
+    <main class="container mx-auto py-12 px-4 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl font-black italic mb-8 uppercase text-center md:text-left">Nossa Frota</h2>
+        <div id="moto-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+            <!-- Cards via Firebase -->
+        </div>
+    </main>
+
+
+
+    
 <section class="bg-white py-10 sm:py-16 px-4 sm:px-6 border-b">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-start">
         
@@ -126,14 +139,39 @@
     </div>
 </section>
 
-    <!-- Lista de Motos -->
-    <main class="container mx-auto py-12 px-4 sm:px-6">
-        <h2 class="text-2xl sm:text-3xl font-black italic mb-8 uppercase text-center md:text-left">Nossa Frota</h2>
-        <div id="moto-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-            <!-- Cards via Firebase -->
-        </div>
-    </main>
 
+<section class="w-full bg-white py-12 sm:py-20 px-6 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto text-center">
+        <div class="inline-block bg-gray-100 p-3 rounded-full mb-6">
+            <svg class="w-8 h-8 text-dark-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-black italic uppercase text-gray-900 leading-tight">
+            A moto que deseja está <span class="text-dark-red">indisponível</span>?
+        </h2>
+        <p class="mt-4 text-gray-600 text-lg sm:text-xl font-medium">
+            Não perca tempo! Entre em nossa fila de espera e seja o primeiro a ser avisado assim que ela for liberada.
+        </p>
+
+        <div class="mt-10">
+            <a href="cadastro.html" 
+               class="inline-block bg-dark-red text-white font-black py-4 px-10 rounded-xl uppercase tracking-wider shadow-xl transition-all transform hover:scale-110 hover:rotate-1 active:scale-95 shadow-[0_15px_30px_rgba(127,0,0,0.3)]">
+                Entrar na Fila de Espera
+            </a>
+        </div>
+        
+        <p class="mt-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            Prioridade total para cadastrados em Salvador e Região
+        </p>
+    </div>
+</section>
+
+
+
+
+    
     <!-- Sessão CTA Rodapé -->
     <section class="bg-gray-900 text-white py-12 px-4 sm:px-6 text-center border-t-4 border-dark-red">
         <h2 class="text-3xl lg:text-4xl font-black italic mb-4 uppercase">Deseja saber mais?</h2>
