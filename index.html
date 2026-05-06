@@ -13,8 +13,8 @@
         .bg-dark-red { background-color: var(--dark-red); }
         .text-dark-red { color: var(--dark-red); }
         /* Ajuste para a imagem única ocupar o espaço corretamente */
-        .banner-container { width: 100%; overflow: hidden; background: #111; }
-        .banner-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .carousel-item { min-width: 100%; height: 100%; }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 relative">
@@ -28,9 +28,12 @@
     </header>
     <!-- Carrossel -->
     <!-- Banner Estático (Uma única foto) -->
-<div class="banner-container border-b-4 border-dark-red h-48 sm:h-64 md:h-80 lg:h-[450px]">
-    <img src="bannerFRR.png" alt="Banner FR Motors" class="banner-img">
-</div>
+<section class="relative w-full overflow-hidden bg-black h-48 sm:h-64 md:h-80 lg:h-[500px]">
+    <div id="carousel-track" class="flex transition-transform duration-700 ease-in-out h-full">
+        </div>
+    
+    <div id="carousel-indicators" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+</section>
 
     <!-- Seção Biografia FR Motors - Largura Total -->
 <section class="w-full bg-gray-900 text-white py-16 px-6 sm:px-12 relative overflow-hidden border-y border-dark-red/20">
@@ -237,7 +240,73 @@
     });
 }
 
+// 1. Função para carregar os banners salvos no seu Painel Admin
+function carregarBanners() {
+    const track = document.getElementById('carousel-track');
+    const indicators = document.getElementById('carousel-indicators');
+    
+    firebase.database().ref('banners').on('value', (snapshot) => {
+        const banners = snapshot.val();
+        if (!banners) {
+            // Se não houver banners no Firebase, ele mostra uma imagem padrão
+            track.innerHTML = `<div class="carousel-item"><img src="card.png"></div>`;
+            return;
+        }
 
+        let htmlContent = "";
+        let indicatorsContent = "";
+        let index = 0;
+
+        Object.keys(banners).forEach((key) => {
+            const url = banners[key].url;
+            // Conversor de link do Google Drive para link direto
+            const directUrl = url.replace("file/d/", "uc?export=view&id=").replace("/view?usp=sharing", "").replace("open?id=", "uc?export=view&id=");
+
+            htmlContent += `
+                <div class="carousel-item">
+                    <img src="${directUrl}" alt="Banner FR Motors">
+                </div>`;
+            
+            indicatorsContent += `
+                <div class="w-2 h-2 rounded-full bg-white/50 transition-all" id="dot-${index}"></div>`;
+            index++;
+        });
+
+        track.innerHTML = htmlContent;
+        indicators.innerHTML = indicatorsContent;
+        if(index > 1) iniciarAnimacao(index);
+    });
+}
+
+// 2. Função que faz o carrossel girar sozinho
+function iniciarAnimacao(total) {
+    let current = 0;
+    const track = document.getElementById('carousel-track');
+
+    setInterval(() => {
+        current = (current + 1) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        
+        // Atualiza as bolinhas indicadoras
+        document.querySelectorAll('[id^="dot-"]').forEach(dot => {
+            dot.classList.remove('bg-white');
+            dot.classList.add('bg-white/50');
+        });
+        const activeDot = document.getElementById(`dot-${current}`);
+        if(activeDot) {
+            activeDot.classList.remove('bg-white/50');
+            activeDot.classList.add('bg-white');
+        }
+    }, 5000); // Troca a cada 5 segundos
+}
+
+// 3. Adicione a chamada na função window.onload que você já tem
+// Se você já tem uma função window.onload, apenas adicione carregarBanners(); dentro dela.
+const originalOnload = window.onload;
+window.onload = function() {
+    if (originalOnload) originalOnload();
+    carregarBanners();
+};
 
         window.onload = render;
     </script>
