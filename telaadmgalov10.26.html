@@ -136,23 +136,30 @@
 
 <script>
     // Função para salvar o link no Firebase
-    function salvarBanner() {
-        const urlInput = document.getElementById('link-drive');
-        const url = urlInput.value;
+function salvarBanner() {
+    const urlInput = document.getElementById('link-drive');
+    const url = urlInput.value.trim();
 
-        if (!url.includes("drive.google.com")) {
-            alert("Por favor, cole um link válido do Google Drive.");
-            return;
-        }
-
-        // Gera um ID único para o banner
-        const novoBannerRef = firebase.database().ref('banners').push();
-        novoBannerRef.set({ url: url })
-            .then(() => {
-                alert("Banner adicionado com sucesso!");
-                urlInput.value = "";
-            });
+    if (!url) {
+        alert("Por favor, cole um link!");
+        return;
     }
+
+    console.log("Tentando salvar no Firebase...");
+
+    // Tenta salvar na chave 'banners'
+    firebase.database().ref('banners').push({
+        url: url
+    })
+    .then(() => {
+        alert("Banner salvo com sucesso no Firebase!");
+        urlInput.value = "";
+    })
+    .catch((error) => {
+        console.error("Erro ao salvar:", error);
+        alert("Erro de permissão no Firebase: " + error.message);
+    });
+}
 
 
     
