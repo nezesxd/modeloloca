@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FR Motors | Sua Liberdade em Duas Rodas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-black uppercase text-dark-red mb-8">Lista de Espera - FR Motors</h1>
+    
+    <div class="overflow-x-auto bg-white shadow-xl rounded-lg">
+        <table class="w-full text-left">
+            <thead class="bg-gray-100 uppercase text-sm">
+                <tr>
+                    <th class="p-4">Data</th>
+                    <th class="p-4">Cliente</th>
+                    <th class="p-4">Contato</th>
+                    <th class="p-4">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-espera">
+                <!-- Dados carregados aqui -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function carregarLista() {
+        const tabela = document.getElementById('tabela-espera');
+        // Ordena pelo timestamp (mais antigo primeiro)
+        firebase.database().ref('espera').orderByChild('timestamp').on('value', (snapshot) => {
+            tabela.innerHTML = "";
+            snapshot.forEach((childSnapshot) => {
+                const id = childSnapshot.key;
+                const c = childSnapshot.val();
+
+                tabela.innerHTML += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4 text-xs">${c.dataCadastro}</td>
+                        <td class="p-4 font-bold">${c.nome} ${c.sobrenome}</td>
+                        <td class="p-4 text-sm">${c.email}<br><span class="text-green-600">${c.whatsapp}</span></td>
+                        <td class="p-4 flex gap-2">
+                            <button onclick="editar('${id}', '${c.nome}')" class="bg-blue-500 text-white p-2 rounded text-xs">Editar</button>
+                            <button onclick="excluir('${id}')" class="bg-red-600 text-white p-2 rounded text-xs">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+    }
+
+    function excluir(id) {
+        if(confirm("Deseja remover este cliente da lista?")) {
+            firebase.database().ref('espera/' + id).remove();
+        }
+    }
+
+    function editar(id, nomeAtual) {
+        const novoNome = prompt("Editar nome:", nomeAtual);
+        if (novoNome) {
+            firebase.database().ref('espera/' + id).update({ nome: novoNome });
+        }
+    }
+
+    window.onload = carregarLista;
+</script>
+
+  
+</html>
