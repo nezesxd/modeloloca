@@ -417,7 +417,20 @@ function iniciarCarrosselFR() {
 }
 
 // Inicia após garantir que o Firebase carregou
-setTimeout(iniciarCarrosselFR, 1000);
+// Em vez de setTimeout, vamos garantir que o Firebase esteja pronto
+function verificarFirebaseELigar() {
+    if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+        console.log("Firebase pronto! Ligando carrossel...");
+        iniciarCarrosselFR();
+    } else {
+        console.log("Aguardando Firebase...");
+        setTimeout(verificarFirebaseELigar, 500);
+    }
+}
+
+verificarFirebaseELigar();
+
+        
 </script>
 
 // EXECUÇÃO IMEDIATA
