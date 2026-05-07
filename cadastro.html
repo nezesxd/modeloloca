@@ -36,6 +36,17 @@ section {
     
     :root { --dark-red: #7f0000; }
 .bg-dark-red { background-color: var(--dark-red); }
+
+
+
+.btn-hover-zoom {
+    transition: transform 0.3s ease; /* Suaviza a animação */
+  }
+
+  .btn-hover-zoom:hover {
+    transform: scale(1.1); /* Aumenta o tamanho em 10% */
+  }
+    
 </style>
     
 <!-- No seu <form> ou seção de cadastro -->
@@ -47,7 +58,7 @@ section {
         <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-3 border rounded" required>
         <input type="email" id="email" placeholder="E-mail" class="w-full p-3 border rounded" required>
         <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-3 border rounded" required>
-        <button onclick="salvarNaListaEspera()" class="bg-dark-red text-white p-3 rounded w-full">
+        <button onclick="salvarNaListaEspera()" class="bg-dark-red text-white p-3 rounded w-full btn-hover-zoom">
     Me avisar quando estiver disponível!
 </button>
     </form>
