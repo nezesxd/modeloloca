@@ -207,64 +207,9 @@
         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.373-.043c.098-.115.427-.49.543-.66.115-.173.231-.144.396-.087.164.058 1.04.491 1.214.578.173.087.289.144.332.231.043.087.043.505-.101.91z"/></svg>
     </a>
 
-    <script>
 
+    
 <script>
-// Função para carregar as motos do Firebase
-function carregarCatalogoMotos() {
-    const listaMotos = document.getElementById('lista-motos');
-    if (!listaMotos) return;
-
-    console.log("Buscando catálogo de motos...");
-
-    firebase.database().ref('motos').on('value', (snapshot) => {
-        const motos = snapshot.val();
-        let htmlMotos = "";
-
-        if (!motos) {
-            listaMotos.innerHTML = "<p class='text-white text-center w-full'>Nenhuma moto disponível no momento.</p>";
-            return;
-        }
-
-        Object.keys(motos).forEach((key) => {
-            const moto = motos[key];
-            
-            // Lógica da Lista de Espera: se não houver estoque, botão muda
-            const temEstoque = moto.quantidade > 0;
-            const botaoAcao = temEstoque 
-                ? `<button class="bg-green-600 w-full py-2 rounded font-bold">Alugar Agora</button>`
-                : `<button onclick="abrirListaEspera('${moto.nome}')" class="bg-amber-500 w-full py-2 rounded font-bold text-black">Entrar na Lista de Espera</button>`;
-
-            htmlMotos += `
-                <div class="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 p-4">
-                    <img src="${moto.foto || 'card.png'}" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-bold text-white">${moto.nome}</h3>
-                    <p class="text-zinc-400 mb-4">${moto.descricao || ''}</p>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-2xl font-bold text-green-500">R$ ${moto.preco}/dia</span>
-                        <span class="text-xs ${temEstoque ? 'text-green-400' : 'text-red-400'}">
-                            ${temEstoque ? 'Disponível' : 'Esgotado'}
-                        </span>
-                    </div>
-                    ${botaoAcao}
-                </div>
-            `;
-        });
-
-        listaMotos.innerHTML = htmlMotos;
-    }, (error) => {
-        console.error("Erro ao carregar motos:", error);
-    });
-}
-
-// Chamar a função assim que carregar
-window.addEventListener('load', () => {
-    // Dá um tempinho para o Firebase inicializar
-    setTimeout(carregarCatalogoMotos, 1500);
-});
-</script>
-        
-        // Use as mesmas configurações do Firebase do seu arquivo anterior aqui
         const firebaseConfig = {
             apiKey: "AIzaSyD3IPrt3xVPUE3S1dImKsAV5MiP-8OhcBE",
             authDomain: "teste-gm-c3955.firebaseapp.com",
@@ -278,43 +223,44 @@ window.addEventListener('load', () => {
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function render() {
-    const list = document.getElementById('moto-list');
+    
+function render() {
+            const list = document.getElementById('moto-list');
 
-    db.ref('motos').on('value', (snapshot) => {
-        const motos = snapshot.val();
-        list.innerHTML = "";
+            db.ref('motos').on('value', (snapshot) => {
+                const motos = snapshot.val();
+                list.innerHTML = "";
 
-        if (!motos) {
-            list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível no momento.</p>`;
-            return;
+                if (!motos) {
+                    list.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhuma moto disponível no momento.</p>`;
+                    return;
+                }
+
+                Object.keys(motos).forEach((key) => {
+                    const moto = motos[key];
+                    list.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden border flex flex-col h-full hover:shadow-xl transition">
+                            <img src="${moto.img || 'https://via.placeholder.com/400x300'}" class="w-full h-48 sm:h-56 object-cover">
+                            <div class="p-4 sm:p-5 flex flex-col flex-grow">
+                                <h4 class="font-black text-lg sm:text-xl text-dark-red uppercase line-clamp-1">${moto.nome}</h4>
+                                <p class="text-[10px] sm:text-xs text-gray-400 mb-2">${moto.modelo} | ${moto.ano}</p>
+                                <div class="flex flex-col mt-auto">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="text-xl sm:text-2xl font-black italic">R$ ${moto.semanal}/sem</p>
+                                        <span class="px-2 py-1 rounded text-[9px] font-bold ${moto.status === 'disponivel' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                            ${moto.status.toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase">Caução: R$ ${moto.caucao || '0'}</p>
+                                </div>
+                                <a href="https://wa.me/5571999999999" target="_blank" class="block text-center mt-4 bg-dark-red text-white py-3 rounded-lg font-bold text-sm hover:bg-red-900 transition">ALUGAR AGORA</a>
+                            </div>
+                        </div>`;
+                });
+            });
         }
 
-        Object.keys(motos).forEach((key) => {
-            const moto = motos[key];
-            list.innerHTML += `
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border flex flex-col h-full hover:shadow-xl transition">
-                    <img src="${moto.img || 'https://via.placeholder.com/400x300'}" class="w-full h-48 sm:h-56 object-cover">
-                    <div class="p-4 sm:p-5 flex flex-col flex-grow">
-                        <h4 class="font-black text-lg sm:text-xl text-dark-red uppercase line-clamp-1">${moto.nome}</h4>
-                        <p class="text-[10px] sm:text-xs text-gray-400 mb-2">${moto.modelo} | ${moto.ano}</p>
-                        <div class="flex flex-col mt-auto">
-                            <div class="flex justify-between items-center mb-1">
-                                <p class="text-xl sm:text-2xl font-black italic">R$ ${moto.semanal}/sem</p>
-                                <span class="px-2 py-1 rounded text-[9px] font-bold ${moto.status === 'disponivel' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
-                                    ${moto.status.toUpperCase()}
-                                </span>
-                            </div>
-                            <p class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase">Caução: R$ ${moto.caucao || '0'}</p>
-                        </div>
-                        <a href="https://wa.me/5571999999999" target="_blank" class="block text-center mt-4 bg-dark-red text-white py-3 rounded-lg font-bold text-sm hover:bg-red-900 transition">ALUGAR AGORA</a>
-                    </div>
-                </div>`;
-        });
-    });
-}
-
-
+        window.onload = render;
         /*CAROUSEL*/
         (function() {
     // ============================================================
