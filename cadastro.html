@@ -34,9 +34,10 @@ section {
         backdrop-filter: blur(5px); /* Efeito de vidro opcional */
     }
     
-    :root { --dark-red: #7f0000; }
+    :root { --dark-red: #7f0000; 
+            --dark-white: #C0C0C0;}
 .bg-dark-red { background-color: var(--dark-red); }
-
+    .bg-dark-white { background-color: var(--dark-white);}
 
 
 .btn-hover-zoom {
@@ -50,7 +51,7 @@ section {
 </style>
     
 <!-- No seu <form> ou seção de cadastro -->
-<section class="border border-danger-subtle p-6 rounded-xl shadow-lg max-w-md mx-auto my-10">
+<section class="bg-dark-white p-6 rounded-xl shadow-lg max-w-md mx-auto my-10">
     
 <h2 class="text-2xl font-black uppercase text-dark-red mb-6">Cadastro de Reserva</h2>
     <form id="form-cadastro" class="space-y-4">
