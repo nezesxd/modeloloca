@@ -9,12 +9,39 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
 <style>
+
+    body {
+        /* Substitua pelo caminho da sua imagem */
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('seu-wallpaper.jpg');
+        
+        /* Mantém a imagem fixa enquanto rola a página */
+        background-attachment: fixed;
+        
+        /* Centraliza e faz a imagem cobrir toda a tela */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        /* Garante que o fundo ocupe toda a altura da tela */
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+section {
+        backdrop-filter: blur(5px); /* Efeito de vidro opcional */
+        background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
     :root { --dark-red: #7f0000; }
 .bg-dark-red { background-color: var(--dark-red); }
 </style>
     
 <!-- No seu <form> ou seção de cadastro -->
 <section class="bg-white p-6 rounded-xl shadow-lg max-w-md mx-auto my-10">
+    
     <h2 class="text-2xl font-black uppercase text-dark-red mb-6">Cadastro de Reserva</h2>
     <form id="form-cadastro" class="space-y-4">
         <input type="text" id="nome" placeholder="Nome" class="w-full p-3 border rounded" required>
