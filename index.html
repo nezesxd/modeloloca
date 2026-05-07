@@ -208,6 +208,62 @@
     </a>
 
     <script>
+
+<script>
+// Função para carregar as motos do Firebase
+function carregarCatalogoMotos() {
+    const listaMotos = document.getElementById('lista-motos');
+    if (!listaMotos) return;
+
+    console.log("Buscando catálogo de motos...");
+
+    firebase.database().ref('motos').on('value', (snapshot) => {
+        const motos = snapshot.val();
+        let htmlMotos = "";
+
+        if (!motos) {
+            listaMotos.innerHTML = "<p class='text-white text-center w-full'>Nenhuma moto disponível no momento.</p>";
+            return;
+        }
+
+        Object.keys(motos).forEach((key) => {
+            const moto = motos[key];
+            
+            // Lógica da Lista de Espera: se não houver estoque, botão muda
+            const temEstoque = moto.quantidade > 0;
+            const botaoAcao = temEstoque 
+                ? `<button class="bg-green-600 w-full py-2 rounded font-bold">Alugar Agora</button>`
+                : `<button onclick="abrirListaEspera('${moto.nome}')" class="bg-amber-500 w-full py-2 rounded font-bold text-black">Entrar na Lista de Espera</button>`;
+
+            htmlMotos += `
+                <div class="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 p-4">
+                    <img src="${moto.foto || 'card.png'}" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-bold text-white">${moto.nome}</h3>
+                    <p class="text-zinc-400 mb-4">${moto.descricao || ''}</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-2xl font-bold text-green-500">R$ ${moto.preco}/dia</span>
+                        <span class="text-xs ${temEstoque ? 'text-green-400' : 'text-red-400'}">
+                            ${temEstoque ? 'Disponível' : 'Esgotado'}
+                        </span>
+                    </div>
+                    ${botaoAcao}
+                </div>
+            `;
+        });
+
+        listaMotos.innerHTML = htmlMotos;
+    }, (error) => {
+        console.error("Erro ao carregar motos:", error);
+    });
+}
+
+// Chamar a função assim que carregar
+window.addEventListener('load', () => {
+    // Dá um tempinho para o Firebase inicializar
+    setTimeout(carregarCatalogoMotos, 1500);
+});
+</script>
+        
         // Use as mesmas configurações do Firebase do seu arquivo anterior aqui
         const firebaseConfig = {
             apiKey: "AIzaSyD3IPrt3xVPUE3S1dImKsAV5MiP-8OhcBE",
