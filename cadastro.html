@@ -21,9 +21,8 @@
         <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-3 border rounded" required>
         <input type="email" id="email" placeholder="E-mail" class="w-full p-3 border rounded" required>
         <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-3 border rounded" required>
-<button type="submit" 
-        class="w-full bg-dark-red text-white font-bold py-3 rounded uppercase transition-transform transform hover:scale-105 active:scale-95 shadow-lg">
-    Entrar na Lista
+<button onclick="salvarNaListaEspera()" class="bg-amber-600 text-white p-3 rounded">
+    Me avisar quando estiver disponível!
 </button>
     </form>
 </section>
@@ -43,24 +42,62 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
     
-    // Use a mesma config do Firebase que você já tem
-    document.getElementById('form-cadastro').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const novoCliente = {
-            nome: document.getElementById('nome').value,
-            sobrenome: document.getElementById('sobrenome').value,
-            email: document.getElementById('email').value,
-            whatsapp: document.getElementById('whatsapp').value,
-            dataCadastro: new Date().toLocaleDateString('pt-BR'),
-            timestamp: Date.now() // Necessário para a ordenação
-        };
+    async function salvarNaListaEspera() {
+    // 1. Captura os dados exatamente como estão no seu formulário
+    const nome = document.getElementById('nome').value;
+    const sobrenome = document.getElementById('sobrenome').value;
+    const email = document.getElementById('email').value;
+    const whatsapp = document.getElementById('whatsapp').value;
+    
+    // 2. O LINK DO SEU WEBHOOK (Cole o link do Make entre as aspas)
+    const webhookURL = "https://hook.us2.make.com/25ugqu3codgkqdvu9ypkakknn9p8dqwu"; 
 
-        firebase.database().ref('espera').push(novoCliente)
-            .then(() => {
-                alert('Cadastro realizado com sucesso!');
-                e.target.reset();
-            });
-    });
+    // Validação básica
+    if (!nome || !whatsapp || !email) {
+        alert("Por favor, preencha todos os campos obrigatórios.");
+        return;
+    }
+
+    // 3. Organiza o objeto com todas as informações
+    const dados = {
+        cliente: `${nome} ${sobrenome}`, // Junta nome e sobrenome
+        email: email,
+        whatsapp: whatsapp,
+        moto: typeof motoSelecionada !== 'undefined' ? motoSelecionada : "Não especificada",
+        data: new Date().toLocaleString('pt-BR'),
+        origem: "Cadastro de Reserva FR Motors"
+    };
+
+    try {
+        // 4. Envia para o Make (Notificação automática no seu celular)
+        // Usamos o modo 'no-cors' ou apenas fetch simples para garantir o envio
+        fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        // 5. Salva no Firebase (Seu banco de dados oficial)
+        if (typeof firebase !== 'undefined') {
+            firebase.database().ref('lista_reserva').push(dados);
+        }
+
+        // 6. Feedback para o usuário
+        alert(`Obrigado, ${nome}! Cadastro realizado. Avisaremos você assim que a moto estiver disponível.`);
+        
+        // Limpa o formulário
+        document.getElementById('form-cadastro').reset();
+
+    } catch (error) {
+        console.error("Erro ao processar reserva:", error);
+        alert("Houve um erro, mas tentaremos processar sua reserva manualmente.");
+    }
+}
+
+// Impede o formulário de recarregar a página ao clicar no botão
+document.getElementById('form-cadastro').addEventListener('submit', function(e) {
+    e.preventDefault();
+    salvarNaListaEspera();
+});
 </script>
 </html>
