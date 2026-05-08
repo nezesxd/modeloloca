@@ -1,71 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FR Motors | Sua Liberdade em Duas Rodas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
-<style>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wallpaperFRL.webp');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+        }
 
-    body {
-        /* Substitua pelo caminho da sua imagem */
-        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wallpaperFRL.webp');
+        /* Seção preta com opacidade baixa e transição suave */
+        .card-cadastro {
+            background-color: rgba(0, 0, 0, 0.5) !important; /* Preto com 50% de transparência */
+            backdrop-filter: blur(5px); /* Desfoque inicial leve */
+            transition: backdrop-filter 0.4s ease, transform 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Efeito ao passar o mouse: aumenta o desfoque */
+        .card-cadastro:hover {
+            backdrop-filter: blur(15px); /* Desfoque mais intenso */
+        }
         
-        /* Mantém a imagem fixa enquanto rola a página */
-        background-attachment: fixed;
+        :root { 
+            --dark-red: #7f0000; 
+        }
         
-        /* Centraliza e faz a imagem cobrir toda a tela */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+        .bg-dark-red { background-color: var(--dark-red); }
+
+        .btn-hover-zoom {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-hover-zoom:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilo para os inputs ficarem melhores sobre o fundo escuro */
+        input {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="card-cadastro p-8 rounded-2xl shadow-2xl max-w-md mx-auto my-10">
+        <h2 class="text-2xl font-black uppercase text-white mb-6 text-center tracking-widest">
+            Cadastro de Reserva
+        </h2>
         
-        /* Garante que o fundo ocupe toda a altura da tela */
-        min-height: 100vh;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-section {
-        backdrop-filter: blur(5px); /* Efeito de vidro opcional */
-    }
-    
-    :root { --dark-red: #7f0000; 
-            --dark-white: #A9A9A9;}
-.bg-dark-red { background-color: var(--dark-red); }
-    .bg-dark-white { background-color: var(--dark-white);}
-
-
-.btn-hover-zoom {
-    transition: transform 0.3s ease; /* Suaviza a animação */
-  }
-
-  .btn-hover-zoom:hover {
-    transform: scale(1.1); /* Aumenta o tamanho em 10% */
-  }
-
-</style>
-    
-<!-- No seu <form> ou seção de cadastro -->
-<section class="bg-dark-white p-6 rounded-xl shadow-lg max-w-md mx-auto my-10">
-    
-<h2 class="text-2xl font-black uppercase text-dark-red mb-6 text-center">Cadastro de Reserva</h2>
-    <form id="form-cadastro" class="space-y-4">
-    <form id="form-cadastro" class="space-y-4">
-        <input type="text" id="nome" placeholder="Nome" class="w-full p-3 border rounded" required>
-        <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-3 border rounded" required>
-        <input type="email" id="email" placeholder="E-mail" class="w-full p-3 border rounded" required>
-        <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-3 border rounded" required>
-        <button onclick="salvarNaListaEspera()" class="bg-dark-red text-white p-3 rounded w-full btn-hover-zoom">
-    Me avisar quando estiver disponível!
-</button>
-    </form>
-</section>
-
+        <form id="form-cadastro" class="space-y-4">
+            <input type="text" id="nome" placeholder="Nome" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
+            <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
+            <input type="email" id="email" placeholder="E-mail" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
+            <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
+            
+            <button type="submit" class="bg-dark-red text-white p-4 rounded-lg w-full btn-hover-zoom font-bold uppercase shadow-lg">
+                Me avisar quando estiver disponível!
+            </button>
+        </form>
+    </section>
 <script>
 
      const firebaseConfig = {
