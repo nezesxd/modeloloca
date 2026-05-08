@@ -10,7 +10,7 @@
 
     <style>
         body {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('wallpaperFRL.webp');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('wallpaperFRL.webp');
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -20,56 +20,87 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* Seção preta com opacidade baixa e transição suave */
+        /* Efeito Neon na Section */
         .card-cadastro {
-            background-color: rgba(0, 0, 0, 0.5) !important; /* Preto com 50% de transparência */
-            backdrop-filter: blur(5px); /* Desfoque inicial leve */
-            transition: backdrop-filter 0.4s ease, transform 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s ease;
+            
+            /* Borda Neon Vermelha/Laranja conforme a foto */
+            border: 3px solid #ff3a00;
+            box-shadow: 0 0 15px #7f0000, 
+                        inset 0 0 10px #7f0000,
+                        0 0 30px rgba(255, 58, 0, 0.3);
+            animation: pulse-neon 2s infinite alternate;
         }
 
-        /* Efeito ao passar o mouse: aumenta o desfoque */
+        /* Desfoque intenso ao passar o mouse */
         .card-cadastro:hover {
-            backdrop-filter: blur(15px); /* Desfoque mais intenso */
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 25px #ff3a00, 
+                        inset 0 0 15px #ff3a00;
+            transform: translateY(-5px);
+        }
+
+        /* Animação para a borda brilhar */
+        @keyframes pulse-neon {
+            from { box-shadow: 0 0 15px #7f0000, inset 0 0 5px #7f0000; }
+            to { box-shadow: 0 0 30px #ff3a00, inset 0 0 15px #7f0000; }
         }
         
-        :root { 
-            --dark-red: #7f0000; 
-        }
-        
+        :root { --dark-red: #7f0000; }
         .bg-dark-red { background-color: var(--dark-red); }
 
+        /* Estilização dos Inputs conforme a imagem (mais escuros e elegantes) */
+        input {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder { color: rgba(255, 255, 255, 0.6); }
+
+        input:focus {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-color: #ff3a00 !important;
+            box-shadow: 0 0 10px rgba(255, 58, 0, 0.5);
+            outline: none;
+        }
+
         .btn-hover-zoom {
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
         .btn-hover-zoom:hover {
-            transform: scale(1.05);
-        }
-
-        /* Estilo para os inputs ficarem melhores sobre o fundo escuro */
-        input {
-            background-color: rgba(255, 255, 255, 0.9) !important;
+            transform: scale(1.03);
+            background-color: #ff3a00 !important;
+            box-shadow: 0 0 20px #ff3a00;
         }
     </style>
 </head>
 
 <body>
-    <section class="card-cadastro p-8 rounded-2xl shadow-2xl max-w-md mx-auto my-10">
-        <h2 class="text-2xl font-black uppercase text-white mb-6 text-center tracking-widest">
+    <section class="card-cadastro p-10 rounded-[30px] max-w-lg mx-auto my-10">
+        <h2 class="text-3xl font-black uppercase text-white mb-8 text-center tracking-[0.2em]">
             Cadastro de Reserva
         </h2>
         
-        <form id="form-cadastro" class="space-y-4">
-            <input type="text" id="nome" placeholder="Nome" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
-            <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
-            <input type="email" id="email" placeholder="E-mail" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
-            <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-3 border-none rounded-lg focus:ring-2 focus:ring-red-600 outline-none" required>
+        <form id="form-cadastro" class="space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="nome" placeholder="Nome" class="w-full p-4 rounded-xl" required>
+                <input type="text" id="sobrenome" placeholder="Sobrenome" class="w-full p-4 rounded-xl" required>
+            </div>
             
-            <button type="submit" class="bg-dark-red text-white p-4 rounded-lg w-full btn-hover-zoom font-bold uppercase shadow-lg">
+            <input type="email" id="email" placeholder="E-mail" class="w-full p-4 rounded-xl" required>
+            
+            <input type="tel" id="whatsapp" placeholder="WhatsApp (71) 99999-9999" class="w-full p-4 rounded-xl" required>
+            
+            <button type="submit" class="bg-dark-red text-white p-5 rounded-xl w-full btn-hover-zoom font-black uppercase tracking-wider text-sm mt-4">
                 Me avisar quando estiver disponível!
             </button>
         </form>
