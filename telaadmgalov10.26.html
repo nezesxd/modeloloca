@@ -23,7 +23,28 @@
             justify-content: center;
             font-family: 'Inter', sans-serif;
         }
-   
+
+                .card-admin {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(8px);
+            border: 3px solid #ff3a00; /* Cor laranja/vermelha da foto */
+            box-shadow: 0 0 15px #7f0000, 
+                        inset 0 0 10px #7f0000,
+                        0 0 30px rgba(255, 58, 0, 0.3);
+            animation: pulse-neon 2s infinite alternate;
+        }
+        
+        @keyframes pulse-neon {
+            from { box-shadow: 0 0 15px #7f0000, inset 0 0 5px #7f0000; }
+            to { box-shadow: 0 0 30px #ff3a00, inset 0 0 15px #7f0000; }
+        }
+        
+        /* Inputs escuros para combinar com o tema */
+        input, select, textarea {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+        }
              
         :root { --dark-red: #7f0000; }
         .bg-dark-red { background-color: var(--dark-red); }
@@ -36,81 +57,64 @@
     <div class="max-w-4xl mx-auto px-4 py-6 md:py-12">
         
         <!-- Header -->
-        <div class="flex items-center gap-3 mb-8 justify-center md:justify-start">
-            <div class="bg-red-800 text-white font-black p-2 rounded text-xl">FR</div>
-            <h2 id="form-title" class="text-2xl md:text-3xl font-black text-red-800 uppercase tracking-tighter">Gerenciar Frota</h2>
-        </div>
+        <div class="flex items-center gap-3 mb-8 justify-center">
+    <div class="bg-red-800 text-white font-black p-2 rounded text-xl">FR</div>
+    <h2 id="form-title" class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter">Gerenciar Frota</h2>
+</div>
 
         <!-- Formulário Card -->
-        <div class="bg-white p-5 md:p-8 rounded-2xl shadow-xl border border-gray-200">
-            <input type="hidden" id="m-id">
+        <section class="card-admin p-6 md:p-10 rounded-[30px] shadow-2xl max-w-4xl mx-auto mb-12">
+    <input type="hidden" id="m-id">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <!-- Imagem (Ocupa 2 colunas no desktop) -->
-                <div class="md:col-span-2">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Link da Imagem (Google Drive ou URL)</label>
-                    <input type="text" id="m-img" placeholder="https://..." class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div class="md:col-span-2">
+            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Link da Imagem</label>
+            <input type="text" id="m-img" placeholder="https://..." class="w-full mt-1 p-4 rounded-xl outline-none transition">
+        </div>
 
-                <!-- Nome -->
-                <div class="md:col-span-2">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Nome da Moto</label>
-                    <input type="text" id="m-nome" placeholder="Ex: Honda CG 160 Titan" class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                </div>
+        <div class="md:col-span-2">
+            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Nome da Moto</label>
+            <input type="text" id="m-nome" placeholder="Ex: Honda CG 160 Titan" class="w-full mt-1 p-4 rounded-xl outline-none transition">
+        </div>
 
-                <!-- Ano e Modelo -->
-                <div class="grid grid-cols-2 gap-4 md:col-span-2">
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ano</label>
-                        <input type="text" id="m-ano" placeholder="2024" class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Modelo</label>
-                        <input type="text" id="m-modelo" placeholder="EX / Fan" class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                    </div>
-                </div>
-
-                <!-- Valores -->
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Semanal (R$)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-4 text-gray-400 font-bold">R$</span>
-                        <input type="number" id="m-semanal" placeholder="0.00" class="w-full mt-1 p-3 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Caução (R$)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-4 text-gray-400 font-bold">R$</span>
-                        <input type="number" id="m-caucao" placeholder="0.00" class="w-full mt-1 p-3 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
-                    </div>
-                </div>
-
-                <!-- Status -->
-                <div class="md:col-span-2">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Disponibilidade</label>
-                    <select id="m-status" class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition font-bold text-gray-700">
-                        <option value="disponivel">✅ DISPONÍVEL</option>
-                        <option value="indisponivel">🚫 INDISPONÍVEL</option>
-                    </select>
-                </div>
+        <div class="grid grid-cols-2 gap-4 md:col-span-2">
+            <div>
+                <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Ano</label>
+                <input type="text" id="m-ano" placeholder="2024" class="w-full mt-1 p-4 rounded-xl">
             </div>
-
-            <!-- Botões de Ação -->
-            <div class="flex flex-col sm:flex-row gap-3 mt-8">
-                <button id="btn-save" onclick="saveMoto()" class="flex-1 bg-red-800 text-white py-4 rounded-xl font-bold uppercase hover:bg-red-900 transition-all shadow-lg active:scale-95">
-                    Salvar
-                </button>
-                <button id="btn-cancel" onclick="clearForm()" class="hidden sm:inline-block bg-gray-200 text-gray-600 px-8 py-4 rounded-xl font-bold uppercase hover:bg-gray-300 transition">
-                    Cancelar
-                </button>
-                <!-- Botão cancelar especial para mobile quando editando -->
-                <button id="btn-cancel-mobile" onclick="clearForm()" class="hidden sm:hidden bg-gray-200 text-gray-600 py-3 rounded-xl font-bold uppercase">
-                    Cancelar Edição
-                </button>
+            <div>
+                <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Modelo</label>
+                <input type="text" id="m-modelo" placeholder="EX / Fan" class="w-full mt-1 p-4 rounded-xl">
             </div>
         </div>
 
+        <div>
+            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Semanal (R$)</label>
+            <input type="number" id="m-semanal" placeholder="R$ 0.00" class="w-full mt-1 p-4 rounded-xl">
+        </div>
+        <div>
+            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Caução (R$)</label>
+            <input type="number" id="m-caucao" placeholder="R$ 0.00" class="w-full mt-1 p-4 rounded-xl">
+        </div>
+
+        <div class="md:col-span-2">
+            <label class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Disponibilidade</label>
+            <select id="m-status" class="w-full mt-1 p-4 rounded-xl font-bold">
+                <option value="disponivel">✅ DISPONÍVEL</option>
+                <option value="indisponivel">🚫 INDISPONÍVEL</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 mt-8">
+        <button id="btn-save" onclick="saveMoto()" class="flex-1 bg-red-800 text-white py-4 rounded-xl font-bold uppercase hover:bg-red-900 transition-all shadow-lg active:scale-95">
+            Salvar
+        </button>
+        <button id="btn-cancel" onclick="clearForm()" class="hidden sm:inline-block bg-white/10 text-white px-8 py-4 rounded-xl font-bold uppercase hover:bg-white/20 transition">
+            Cancelar
+        </button>
+    </div>
+</section>
         <!-- Lista de Motos Cadastradas -->
         <div class="mt-12">
             <div class="flex justify-between items-end mb-6">
